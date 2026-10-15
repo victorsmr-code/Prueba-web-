@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMAGINA | Agencia Digital & Experiencias Creativas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome & Lucide Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cyan: '#00E5CC',
+                            purple: '#A855F7',
+                            orange: '#FF7A1A',
+                            navy: '#0F172A',
+                            dark: '#0B0F19'
+                        }
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+            overflow-x: hidden;
+        }
+
+        /* Custom Wave Graphic Backgrounds */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0b0d1b 0%, #171836 100%);
+        }
+
+        .gradient-pill {
+            background: linear-gradient(90deg, #00E5CC 0%, #A855F7 50%, #FF7A1A 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00E5CC, #A855F7, #FF7A1A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Page Transition Animations */
+        .view-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .view-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Card Hover Effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-purple selection:text-white">
+
+    <!-- MAIN SITE HEADER -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Mobile Menu Toggle Button (Left) -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none transition-colors" aria-label="Abrir Menú">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="javascript:void(0)" onclick="navigateTo('inicio')" class="flex items-center gap-2 group">
+                <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:opacity-90 transition-opacity">
+                    IMAGINA
+                </span>
+                <span class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-orange animate-pulse"></span>
+            </a>
+
+            <!-- Desktop Navigation Links (Separated View Routing) -->
+            <nav class="hidden lg:flex items-center space-x-1 font-semibold text-sm">
+                <button onclick="navigateTo('inicio')" id="nav-inicio" class="nav-btn px-4 py-2.5 rounded-full text-brand-purple bg-purple-50 transition-all duration-200">Inicio</button>
+                <button onclick="navigateTo('servicios')" id="nav-servicios" class="nav-btn px-4 py-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">Servicios</button>
+                <button onclick="navigateTo('portfolio')" id="nav-portfolio" class="nav-btn px-4 py-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">Portfolio</button>
+                <button onclick="navigateTo('testimonios')" id="nav-testimonios" class="nav-btn px-4 py-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">Testimonios</button>
+                <button onclick="navigateTo('blog')" id="nav-blog" class="nav-btn px-4 py-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">Blog</button>
+                <button onclick="navigateTo('contacto')" id="nav-contacto" class="nav-btn px-4 py-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">Contacto</button>
+            </nav>
+
+            <!-- Header Actions (Search & Quick Contact) -->
+            <div class="flex items-center gap-2">
+                <button onclick="openSearchModal()" class="p-2.5 text-slate-700 hover:text-brand-purple hover:bg-slate-100 rounded-full transition-colors" aria-label="Buscar">
+                    <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                </button>
+                <button onclick="navigateTo('contacto')" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white font-semibold text-xs tracking-wider uppercase hover:bg-slate-800 transition-colors shadow-md">
+                    <span>Contacto</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation Overlay -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-6 py-6 space-y-3 shadow-xl animate-fadeIn">
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Navegación por Secciones</p>
+            <button onclick="navigateTo('inicio'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-purple-50 hover:text-brand-purple">
+                <i class="fa-solid fa-house w-6 text-brand-purple"></i> Inicio
+            </button>
+            <button onclick="navigateTo('servicios'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-cyan-50 hover:text-teal-600">
+                <i class="fa-solid fa-layer-group w-6 text-brand-cyan"></i> Nuestros Servicios
+            </button>
+            <button onclick="navigateTo('portfolio'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-amber-50 hover:text-amber-600">
+                <i class="fa-solid fa-briefcase w-6 text-brand-orange"></i> Portfolio de Proyectos
+            </button>
+            <button onclick="navigateTo('testimonios'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-pink-50 hover:text-pink-600">
+                <i class="fa-solid fa-quote-left w-6 text-brand-purple"></i> Testimonios y Reseñas
+            </button>
+            <button onclick="navigateTo('blog'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-blue-50 hover:text-blue-600">
+                <i class="fa-solid fa-newspaper w-6 text-blue-500"></i> Blog Reciente
+            </button>
+            <button onclick="navigateTo('contacto'); toggleMobileMenu();" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-800 hover:bg-slate-100">
+                <i class="fa-solid fa-envelope w-6 text-slate-700"></i> Formulario de Contacto
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT CONTAINER WITH SEPARATE PAGES/VIEWS -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex-grow w-full">
+
+        <!-- ========================================== -->
+        <!-- VISTA 1: INICIO (HOME VIEW)               -->
+        <!-- ========================================== -->
+        <section id="view-inicio" class="view-section active space-y-16">
+            
+            <!-- HERO BANNER (Exact Style from Reference Image) -->
+            <div class="relative overflow-hidden rounded-3xl hero-gradient text-white p-8 sm:p-12 md:p-16 shadow-2xl">
+                <!-- Abstract Colorful Wave Blobs at Bottom -->
+                <div class="absolute -bottom-10 -left-10 w-44 h-44 sm:w-56 sm:h-56 bg-brand-orange rounded-full filter blur-2xl opacity-60 pointer-events-none"></div>
+                <div class="absolute -bottom-12 right-1/4 w-52 h-52 bg-brand-purple rounded-full filter blur-3xl opacity-50 pointer-events-none"></div>
+                <div class="absolute top-0 -right-10 w-60 h-60 bg-brand-cyan rounded-full filter blur-3xl opacity-30 pointer-events-none"></div>
+
+                <!-- Hero Content -->
+                <div class="relative z-10 max-w-2xl mx-auto text-center space-y-6">
+                    <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-white/10">
+                        Agencia Digital de Alto Impacto
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-tight">
+                        IMAGINA TU FUTURO
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-300 font-medium max-w-lg mx-auto">
+                        Creamos experiencias digitales únicas para marcas audaces.
+                    </p>
+                    <div class="pt-4 flex justify-center">
+                        <button onclick="navigateTo('contacto')" class="gradient-pill px-8 py-4 rounded-full font-extrabold text-white text-sm sm:text-base uppercase tracking-wider shadow-lg hover:shadow-cyan-500/30 transform hover:-translate-y-1 transition-all duration-300">
+                            Comenzar Proyecto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Wave Graphics Decoration at Bottom -->
+                <div class="mt-12 pt-6 flex justify-center items-end gap-2 opacity-80">
+                    <div class="w-12 h-3 rounded-full bg-brand-orange"></div>
+                    <div class="w-16 h-3 rounded-full bg-brand-purple"></div>
+                    <div class="w-20 h-3 rounded-full bg-brand-cyan"></div>
+                </div>
+            </div>
+
+            <!-- NUESTROS SERVICIOS (4 Vibrant Colored Cards from Reference Image) -->
+            <div class="space-y-8">
+                <div class="text-center space-y-2">
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 uppercase">
+                        NUESTROS SERVICIOS
+                    </h2>
+                    <p class="text-slate-500 text-sm max-w-md mx-auto">Soluciones integrales diseñadas para impulsar la presencia de tu empresa en el entorno digital.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Tarjeta 1: Diseño Web (Cyan/Turquoise) -->
+                    <div class="bg-[#00E5CC] rounded-3xl p-6 text-slate-900 flex flex-col justify-between space-y-6 card-hover shadow-lg">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-slate-900 text-2xl">
+                                <i class="fa-solid fa-desktop"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Diseño Web</h3>
+                            <p class="text-slate-800 text-xs sm:text-sm font-medium leading-relaxed">
+                                Creamos experiencias digitales únicas para marcas.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('servicios')" class="w-full py-2.5 px-4 bg-white/90 hover:bg-white text-slate-900 font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                            <span>Saber más</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Tarjeta 2: Branding (Purple) -->
+                    <div class="bg-[#A855F7] rounded-3xl p-6 text-white flex flex-col justify-between space-y-6 card-hover shadow-lg">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-white text-2xl">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Branding</h3>
+                            <p class="text-purple-100 text-xs sm:text-sm font-medium leading-relaxed">
+                                Creamos experiencias digitales únicas para marcas audaces.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('servicios')" class="w-full py-2.5 px-4 bg-white/90 hover:bg-white text-purple-900 font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                            <span>Saber más</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Tarjeta 3: Marketing Digital (Orange) -->
+                    <div class="bg-[#FF7A1A] rounded-3xl p-6 text-white flex flex-col justify-between space-y-6 card-hover shadow-lg">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-white text-2xl">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Marketing Digital</h3>
+                            <p class="text-orange-100 text-xs sm:text-sm font-medium leading-relaxed">
+                                Estrategias omnicanal para destacar frente a tu competencia.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('servicios')" class="w-full py-2.5 px-4 bg-white/90 hover:bg-white text-orange-950 font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                            <span>Saber más</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Tarjeta 4: Desarrollo (Navy Dark) -->
+                    <div class="bg-[#0F172A] rounded-3xl p-6 text-white flex flex-col justify-between space-y-6 card-hover shadow-lg border border-slate-800">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-cyan-400 text-2xl">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Desarrollo</h3>
+                            <p class="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed">
+                                Creamos experiencias digitales únicas para marcas.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('servicios')" class="w-full py-2.5 px-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition-all border border-white/20 flex items-center justify-center gap-2">
+                            <span>Saber más</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PORTFOLIO SECTION PREVIEW -->
+            <div class="space-y-8">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 uppercase">
+                        PORTFOLIO
+                    </h2>
+                    <button onclick="navigateTo('portfolio')" class="text-xs font-bold text-brand-purple hover:underline flex items-center gap-1">
+                        Ver Todos <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <!-- Project 1: Studio XYZ -->
+                    <div onclick="openProjectModal('Studio XYZ')" class="cursor-pointer group space-y-3">
+                        <div class="aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-1 shadow-md group-hover:shadow-xl transition-all">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Studio XYZ" class="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <p class="font-bold text-slate-800 text-center text-base">Studio XYZ</p>
+                    </div>
+
+                    <!-- Project 2: Cafe Bloom -->
+                    <div onclick="openProjectModal('Cafe Bloom')" class="cursor-pointer group space-y-3">
+                        <div class="aspect-square rounded-3xl overflow-hidden bg-slate-200 p-1 shadow-md group-hover:shadow-xl transition-all">
+                            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80" alt="Cafe Bloom" class="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <p class="font-bold text-slate-800 text-center text-base">Cafe Bloom</p>
+                    </div>
+
+                    <!-- Project 3: TechCorp -->
+                    <div onclick="openProjectModal('TechCorp')" class="cursor-pointer group space-y-3">
+                        <div class="aspect-square rounded-3xl overflow-hidden bg-slate-200 p-1 shadow-md group-hover:shadow-xl transition-all">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="TechCorp" class="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <p class="font-bold text-slate-800 text-center text-base">TechCorp</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TESTIMONIALS SECTION -->
+            <div class="space-y-8 bg-slate-100 rounded-3xl p-8 sm:p-12">
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-center text-slate-900 uppercase">
+                    TESTIMONIOS
+                </h2>
+                <div class="max-w-xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col items-center text-center space-y-4">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="María P." class="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100">
+                    <p class="text-slate-700 font-bold text-lg sm:text-xl">¡Increíble equipo!</p>
+                    <p class="text-slate-500 text-sm italic">"Transformaron por completo nuestra identidad visual y las conversiones de nuestra tienda web se triplicaron en solo dos meses."</p>
+                    <span class="text-xs font-extrabold tracking-wider text-brand-purple uppercase">- María P., Directora de Marketing</span>
+                </div>
+            </div>
+
+            <!-- RECENT BLOG SECTION -->
+            <div class="space-y-8">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 uppercase">
+                        BLOG RECIENTE
+                    </h2>
+                    <button onclick="navigateTo('blog')" class="text-xs font-bold text-brand-purple hover:underline flex items-center gap-1">
+                        Ver Blog <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div onclick="navigateTo('blog')" class="cursor-pointer bg-white rounded-3xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=300&q=80" alt="Blog 1" class="w-24 h-24 rounded-2xl object-cover">
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full uppercase">Tendencias</span>
+                            <h3 class="font-bold text-slate-800 text-sm hover:text-brand-purple">Tendencias de Diseño 2026</h3>
+                            <p class="text-slate-400 text-xs line-clamp-2">Descubre los nuevos patrones UI que liderarán la industria este año.</p>
+                        </div>
+                    </div>
+
+                    <div onclick="navigateTo('blog')" class="cursor-pointer bg-white rounded-3xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=300&q=80" alt="Blog 2" class="w-24 h-24 rounded-2xl object-cover">
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full uppercase">UX / UI</span>
+                            <h3 class="font-bold text-slate-800 text-sm hover:text-brand-purple">UX/UI Efectiva para Startups</h3>
+                            <p class="text-slate-400 text-xs line-clamp-2">Principios esenciales para crear interfaces optimizadas para conversión.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 2: SERVICIOS (DEDICATED PAGE)       -->
+        <!-- ========================================== -->
+        <section id="view-servicios" class="view-section space-y-12">
+            <div class="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white text-center space-y-4">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-cyan">Soluciones Especializadas</span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold uppercase">NUESTROS SERVICIOS</h1>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Páginas totalmente dedicadas a cubrir todas las áreas creativas y tecnológicas que tu negocio requiere.
+                </p>
+            </div>
+
+            <!-- Deep Dive Grid of Services -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Service 1: Web Design -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#00E5CC]/20 text-[#00b39f] flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900">Diseño Web & UX/UI</h3>
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Sitios Corporativos • E-Commerce • Web Apps</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Desarrollamos sitios web modernos con velocidad ultra rápida, optimizados para buscadores y con layouts visuales impecables pensados para cautivar a tu audiencia desde el primer segundo.
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700 font-semibold">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-500"></i> Responsive Design (Móvil, Tablet y Escritorio)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-500"></i> Prototipado interactivo Figma</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-500"></i> Optimización SEO y velocidad de carga</li>
+                    </ul>
+                    <button onclick="navigateTo('contacto')" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all">Solicitar Cotización de Diseño Web</button>
+                </div>
+
+                <!-- Service 2: Branding -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#A855F7]/20 text-[#8b22e2] flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900">Branding & Identidad</h3>
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Estrategia • Logotipos • Manual de Marca</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Construimos marcas memorables que comunican sus valores con claridad y elegancia. Diseñamos la personalidad visual completa de tu empresa.
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700 font-semibold">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-500"></i> Creación de logotipo y símbolos</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-500"></i> Paleta de colores y tipografía de marca</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-500"></i> Manual de marca y tono de voz</li>
+                    </ul>
+                    <button onclick="navigateTo('contacto')" class="w-full py-3 bg-[#A855F7] hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-all">Solicitar Estrategia de Branding</button>
+                </div>
+
+                <!-- Service 3: Marketing Digital -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#FF7A1A]/20 text-[#e65c00] flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900">Marketing Digital</h3>
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Google Ads • Meta Ads • Redes Sociales</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Generamos campañas publicitarias altamente rentables que convierten visitantes en clientes recurrentes utilizando analítica de datos avanzada.
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700 font-semibold">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-500"></i> Gestión de campañas publicitarias Ads</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-500"></i> Creación de contenido estratégico</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-500"></i> Métricas y reporte mensual de ROI</li>
+                    </ul>
+                    <button onclick="navigateTo('contacto')" class="w-full py-3 bg-[#FF7A1A] hover:bg-orange-600 text-white font-bold text-xs rounded-xl transition-all">Impulsar Campañas Digitales</button>
+                </div>
+
+                <!-- Service 4: Desarrollo -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#0F172A]/20 text-[#0F172A] flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900">Desarrollo Software & App</h3>
+                            <p class="text-xs text-slate-400 uppercase font-semibold">SaaS • API Integrations • Apps Móviles</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Arquitectura de software robusta y escalable construida con las tecnologías más eficientes del mercado actual para potenciar tus operaciones.
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700 font-semibold">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-slate-800"></i> Integraciones API personalizadas</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-slate-800"></i> Código limpio y seguro</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-slate-800"></i> Mantenimiento continuo 24/7</li>
+                    </ul>
+                    <button onclick="navigateTo('contacto')" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all">Iniciar Proyecto Tecnológico</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 3: PORTFOLIO (DEDICATED PAGE)       -->
+        <!-- ========================================== -->
+        <section id="view-portfolio" class="view-section space-y-10">
+            <div class="text-center space-y-3">
+                <span class="text-xs font-bold uppercase text-brand-purple tracking-widest">Nuestra Galería</span>
+                <h1 class="text-3xl sm:text-5xl font-black uppercase text-slate-900">PORTFOLIO DE TRABAJOS</h1>
+                <p class="text-slate-500 text-sm max-w-xl mx-auto">Explora algunos de los proyectos más representativos desarrollados por el equipo de IMAGINA.</p>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-wrap justify-center gap-2">
+                <button onclick="filterPortfolio('all')" class="portfolio-filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-900 text-white">Todos</button>
+                <button onclick="filterPortfolio('web')" class="portfolio-filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200">Diseño Web</button>
+                <button onclick="filterPortfolio('branding')" class="portfolio-filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200">Branding</button>
+                <button onclick="filterPortfolio('3d')" class="portfolio-filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200">Diseño 3D</button>
+            </div>
+
+            <!-- Full Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="portfolio-item web 3d bg-white rounded-3xl border border-slate-100 p-4 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Studio XYZ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Diseño 3D</span>
+                    </div>
+                    <div class="px-2 space-y-2">
+                        <h3 class="text-xl font-bold text-slate-900">Studio XYZ</h3>
+                        <p class="text-slate-500 text-xs">Identidad espacial 3D y renderizado interactivo para agencia creativa.</p>
+                        <button onclick="openProjectModal('Studio XYZ')" class="text-brand-purple text-xs font-bold inline-flex items-center gap-1 pt-2 hover:underline">Ver Caso de Estudio <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="portfolio-item branding bg-white rounded-3xl border border-slate-100 p-4 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80" alt="Cafe Bloom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-brand-orange text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Branding</span>
+                    </div>
+                    <div class="px-2 space-y-2">
+                        <h3 class="text-xl font-bold text-slate-900">Cafe Bloom</h3>
+                        <p class="text-slate-500 text-xs">Rebranding artesanal, empaques ecológicos y portal e-commerce de especialidad.</p>
+                        <button onclick="openProjectModal('Cafe Bloom')" class="text-brand-orange text-xs font-bold inline-flex items-center gap-1 pt-2 hover:underline">Ver Caso de Estudio <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="portfolio-item web bg-white rounded-3xl border border-slate-100 p-4 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="TechCorp" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-brand-cyan text-slate-900 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Desarrollo Web</span>
+                    </div>
+                    <div class="px-2 space-y-2">
+                        <h3 class="text-xl font-bold text-slate-900">TechCorp</h3>
+                        <p class="text-slate-500 text-xs">Plataforma SaaS en la nube con analítica de datos en tiempo real.</p>
+                        <button onclick="openProjectModal('TechCorp')" class="text-teal-600 text-xs font-bold inline-flex items-center gap-1 pt-2 hover:underline">Ver Caso de Estudio <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 4: TESTIMONIOS (DEDICATED PAGE)     -->
+        <!-- ========================================== -->
+        <section id="view-testimonios" class="view-section space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-xs font-bold uppercase text-brand-orange tracking-widest">Lo que opinan nuestros clientes</span>
+                <h1 class="text-3xl sm:text-5xl font-black uppercase text-slate-900">TESTIMONIOS DE ÉXITO</h1>
+                <p class="text-slate-500 text-sm max-w-lg mx-auto">Conoce las historias de marcas que han transformado su presencia digital junto a IMAGINA.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm italic">"¡Increíble equipo! Lograron entender el ADN de nuestra marca desde el primer taller y el producto final superó nuestras expectativas."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="María P." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">María P.</p>
+                            <p class="text-xs text-slate-400">CEO en Bloom Marketing</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm italic">"La velocidad de desarrollo y el nivel de detalle en el diseño web es algo que no habíamos experimentado antes con ninguna agencia."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Carlos M." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">Carlos M.</p>
+                            <p class="text-xs text-slate-400">Director en TechCorp</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm italic">"La estrategia de Branding fue la clave para cerrar nuestra primera ronda de inversión internacional. 100% recomendados."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Lucía R." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">Lucía R.</p>
+                            <p class="text-xs text-slate-400">Fundadora Studio XYZ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 5: BLOG (DEDICATED PAGE)            -->
+        <!-- ========================================== -->
+        <section id="view-blog" class="view-section space-y-10">
+            <div class="text-center space-y-3">
+                <span class="text-xs font-bold uppercase text-brand-cyan tracking-widest">Novedades & Conocimiento</span>
+                <h1 class="text-3xl sm:text-5xl font-black uppercase text-slate-900">BLOG RECIENTE</h1>
+                <p class="text-slate-500 text-sm max-w-lg mx-auto">Artículos, consejos e inspiración sobre diseño, tecnología y estrategia digital.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Article 1 -->
+                <article class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Tendencias de Diseño" class="w-full h-56 object-cover">
+                        <div class="p-6 space-y-3">
+                            <span class="text-xs font-bold text-teal-600 bg-teal-50 px-3 py-1 rounded-full uppercase">Tendencias de Diseño 2026</span>
+                            <h2 class="text-2xl font-bold text-slate-900">El futuro de las interfaces digitales y micro-interacciones</h2>
+                            <p class="text-slate-500 text-sm leading-relaxed">
+                                Exploramos cómo el diseño generativo, los elementos tridimensionales suaves y las experiencias adaptativas están redefiniendo el comportamiento del usuario en la web.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="alert('Cargando artículo completo...')" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors">Leer Artículo Completo</button>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80" alt="UX/UI Efectiva" class="w-full h-56 object-cover">
+                        <div class="p-6 space-y-3">
+                            <span class="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full uppercase">UX / UI Efectiva</span>
+                            <h2 class="text-2xl font-bold text-slate-900">Cómo optimizar la tasa de conversión en tu tienda digital</h2>
+                            <p class="text-slate-500 text-sm leading-relaxed">
+                                Principios fundamentales de arquitectura de información y patrones visuales que eliminan la fricción en el proceso de compra.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="alert('Cargando artículo completo...')" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors">Leer Artículo Completo</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 6: CONTACTO (DEDICATED PAGE)        -->
+        <!-- ========================================== -->
+        <section id="view-contacto" class="view-section space-y-12">
+            
+            <!-- Contact Card Container (Exact styling as bottom card in reference) -->
+            <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 md:p-16 shadow-2xl relative overflow-hidden">
+                <!-- Accent background wave decoration -->
+                <div class="absolute top-0 right-0 w-80 h-80 bg-brand-purple/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-80 h-80 bg-brand-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    
+                    <!-- Left Column: Heading & Contact Info -->
+                    <div class="space-y-6">
+                        <span class="inline-block px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+                            ¿Hablamos de tu próximo proyecto?
+                        </span>
+                        <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">
+                            CONTÁCTANOS
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            Cuéntanos tu idea. Nuestro equipo responderá en menos de 24 horas con un diagnóstico previo y propuesta sin compromiso.
+                        </p>
+
+                        <div class="space-y-4 pt-4 text-sm">
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-brand-cyan">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <span>hola@imagina-agencia.com</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-brand-purple">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <span>+34 912 345 678</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-slate-300">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-brand-orange">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <span>Paseo de la Castellana 120, Madrid</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive Form (Matching Reference Inputs) -->
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4 bg-white/5 p-6 sm:p-8 rounded-2xl backdrop-blur-md border border-white/10">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-300 mb-2">Email de Contacto</label>
+                            <input type="email" required placeholder="tu@email.com" class="w-full px-4 py-3 rounded-xl bg-white text-slate-900 placeholder-slate-400 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-300 mb-2">Mensaje o Detalles del Proyecto</label>
+                            <textarea rows="4" required placeholder="Describe brevemente tus objetivos..." class="w-full px-4 py-3 rounded-xl bg-white text-slate-900 placeholder-slate-400 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan transition-all resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 px-6 rounded-xl gradient-pill text-white font-extrabold text-xs uppercase tracking-wider hover:opacity-95 transition-opacity shadow-lg">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER (Exact structure as shown in reference design) -->
+    <footer class="bg-slate-900 text-white mt-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <span class="text-2xl font-black tracking-tight text-white">IMAGINA</span>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Creamos experiencias digitales únicas para marcas audaces de todo el mundo.
+                    </p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="space-y-3">
+                    <p class="text-xs font-bold uppercase text-slate-300 tracking-wider">Secciones</p>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><button onclick="navigateTo('inicio')" class="hover:text-white transition-colors">Inicio</button></li>
+                        <li><button onclick="navigateTo('servicios')" class="hover:text-white transition-colors">Servicios</button></li>
+                        <li><button onclick="navigateTo('portfolio')" class="hover:text-white transition-colors">Portfolio</button></li>
+                        <li><button onclick="navigateTo('testimonios')" class="hover:text-white transition-colors">Testimonios</button></li>
+                        <li><button onclick="navigateTo('blog')" class="hover:text-white transition-colors">Blog</button></li>
+                        <li><button onclick="navigateTo('contacto')" class="hover:text-white transition-colors">Contacto</button></li>
+                    </ul>
+                </div>
+
+                <!-- Social Icons (As shown in reference image) -->
+                <div class="space-y-3">
+                    <p class="text-xs font-bold uppercase text-slate-300 tracking-wider">Social</p>
+                    <div class="flex items-center gap-3">
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="javascript:void(0)" class="w-9 h-9 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center hover:bg-cyan-500 hover:text-white transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="space-y-3">
+                    <p class="text-xs font-bold uppercase text-slate-300 tracking-wider">Sobre Nosotros</p>
+                    <p class="text-slate-400 text-xs">Servicios creativos digitales integrales. © 2026 Agencia IMAGINA. Todos los derechos reservados.</p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- PROJECT DETAIL MODAL -->
+    <div id="project-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative animate-fadeIn">
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="space-y-2">
+                <span id="modal-category" class="text-xs font-bold uppercase px-3 py-1 rounded-full bg-purple-50 text-brand-purple">Caso de Éxito</span>
+                <h3 id="modal-title" class="text-2xl font-bold text-slate-900">Studio XYZ</h3>
+            </div>
+            <p id="modal-desc" class="text-slate-600 text-sm leading-relaxed">
+                Desarrollo completo de marca, modelado interactivo 3D y experiencia web responsive.
+            </p>
+            <div class="pt-2">
+                <button onclick="closeProjectModal(); navigateTo('contacto');" class="w-full py-3 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-colors">Solicitar Proyecto Similar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-20 p-4">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-4 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-3 px-2">
+                <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                <input type="text" placeholder="Buscar en IMAGINA (ej: Branding, Web, Blog)..." class="w-full text-slate-800 focus:outline-none text-sm font-medium">
+                <button onclick="closeSearchModal()" class="text-slate-400 hover:text-slate-600 text-xs font-bold">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // Single Page Router: Handles view switching smoothly
+        function navigateTo(viewId) {
+            // Hide all view sections
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(v => {
+                v.classList.remove('active');
+            });
+
+            // Show target view
+            const target = document.getElementById('view-' + viewId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            // Update Desktop Nav Button active styling
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-brand-purple', 'bg-purple-50');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById('nav-' + viewId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600');
+                activeBtn.classList.add('text-brand-purple', 'bg-purple-50');
+            }
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile drawer toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Project Modal logic
+        function openProjectModal(title) {
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+
+            modalTitle.innerText = title;
+            if (title === 'Studio XYZ') {
+                modalDesc.innerText = 'Proyecto de identidad espacial 3D con renders interactivos en tiempo real y diseño responsive de vanguardia.';
+            } else if (title === 'Cafe Bloom') {
+                modalDesc.innerText = 'Estrategia integral de branding, embalaje ecológico y desarrollo de tienda e-commerce de alto rendimiento.';
+            } else if (title === 'TechCorp') {
+                modalDesc.innerText = 'Plataforma SaaS en la nube con interfaz intuitiva y paneles analíticos en tiempo real.';
+            } else {
+                modalDesc.innerText = 'Solución personalizada creada por el equipo de diseño y desarrollo de IMAGINA.';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+
+        // Search modal logic
+        function openSearchModal() {
+            document.getElementById('search-modal').classList.remove('hidden');
+        }
+
+        function closeSearchModal() {
+            document.getElementById('search-modal').classList.add('hidden');
+        }
+
+        // Portfolio filtering logic
+        function filterPortfolio(category) {
+            const items = document.querySelectorAll('.portfolio-item');
+            const buttons = document.querySelectorAll('.portfolio-filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            event.currentTarget.classList.remove('bg-slate-100', 'text-slate-600');
+            event.currentTarget.classList.add('bg-slate-900', 'text-white');
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Form Submission handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert('¡Gracias por tu mensaje! El equipo de IMAGINA se pondrá en contacto contigo muy pronto.');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
